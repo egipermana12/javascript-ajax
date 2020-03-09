@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kirim data dengan ajax</title>
+</head>
+<body>
+
+	<h1>Kirim data dengan ajax</h1>
+	<form method="POST" onsubmit="return sendData()">
+		<p>
+			<label>Judul</label>
+			<input type="text" id="title" name="title" placeholder="Masukan judul">
+		</p>
+		<p>
+			<label>isi Artikel</label>
+			<textarea id="body" placeholder="isi artikel..." cols="50" rows="10"></textarea>
+		</p>
+		<input type="submit" value="Kirim" />
+	</form>
+
+	<script type="text/javascript">
+
+		function sendData()
+		{
+			var xhr = new XMLHttpRequest();
+			var url = "https://jsonplaceholder.typicode.com/posts";
+
+			var data = JSON.stringify({
+				title: document.getElementById("title").value,
+				body: document.getElementById("body").value,
+				userId: 1
+			});
+
+			xhr.open("POST", url, true);
+			xhr.setRequestHeader("Content-type","application/json;charset=UTF-8");
+			xhr.onload = function()
+			{
+				console.log(this.responseText);
+			};
+
+			xhr.send(data);
+			return false;
+
+		}
+
+	</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ajax axios</title>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+	<h1>Tutorial ajax dengan axios</h1>
+	<button id="btn-load" onclick="loadContent()">Load Data</button>
+	<div id="result"></div>
+
+	<hr>
+	
+	<button id="awal" onclick="awalPage()" value="awal">awal</button>
+	<button id="prev" onclick="prevPage()" value="prev">prev</button>
+	<button id="next" onclick="nextPage()" value="next">next</button>
+	<button id="last" onclick="lastPage()" value="last">last</button>
+
+	<script type="text/javascript">
+
+		var url = "https://5b5cb0546a725000148a67ab.mockapi.io/api/v1/users";
+		var limitPerPage = 2;
+		var limitPerPages = 0;
+		var currentPage = 1;
+
+		function loadContent()
+		{
+
+			limitPerPages = getNumberOfPages();
+
+			document.getElementById("btn-load").innerHTML = "Loading data...";
+			document.getElementById("btn-load").setAttribute("disabled", "true");
+			axios.get(url + `?page=${currentPage}&limit=${limitPerPage}` ).then(function(response){
+				var temp = response.data.map(post => {
+					return `
+						<h3>${post.name}</h3>
+						<img src = ${post.avatar} />
+						<hr>
+					`
+				}).join("");
+
+				document.getElementById("result").innerHTML = temp;
+
+			}).catch(function(error){
+				console.log(error);
+			}).then(function(){
+				document.getElementById("btn-load").innerHTML = "Done";
+				document.getElementById("btn-load").removeAttribute("disabled");
+			});
+
+			console.log(Math.ceil(url.length / limitPerPage));
+			console.log(currentPage);
+		}
+
+		function awalPage() {
+		    currentPage = 1;
+		    loadContent();
+		}
+		function prevPage() {
+		    currentPage -= 1;
+		    loadContent();
+		}
+		function nextPage() {
+		    currentPage += 1;
+		    loadContent();
+		}
+		function lastPage() {
+		    currentPage = limitPerPages;
+		    loadContent();
+		}
+		function getNumberOfPages() {
+		    return Math.ceil(url.length / limitPerPage);
+		}
+
+		function check() {
+		    document.getElementById("nextPage").disabled = currentPage == limitPerPages ? true : false;
+		    document.getElementById("prevPage").disabled = currentPage == 1 ? true : false;
+		    document.getElementById("awalPage").disabled = currentPage == 1 ? true : false;
+		    document.getElementById("lastPage").disabled = currentPage == limitPerPages ? true : false;
+		}
+
+
+	</script>
+</body>
+</html>

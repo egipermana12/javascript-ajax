@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Belajar dasar ajax</title>
+</head>
+<body>
+
+	<h1>Tutorial Ajax 1</h1>
+	<div id="hasil"></div>
+	<button onclick="loadContent()">load Content</button>
+
+	<script type="text/javascript">
+
+		function loadContent()
+		{
+			var xhr = new XMLHttpRequest();
+			var url = "https://api.github.com/users/petanikode";
+			xhr.onreadystatechange = function()
+			{
+				if(this.readyState == 4 && this.status == 200)
+				{
+					document.getElementById("hasil").innerHTML = this.responseText;
+				}
+			};
+
+			xhr.open("GET", url, true);
+			xhr.send();
+		}
+
+	</script>
+
+</body>
+</html>
